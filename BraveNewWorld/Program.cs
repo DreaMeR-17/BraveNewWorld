@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace BraveNewWorld
 {
@@ -49,7 +50,7 @@ namespace BraveNewWorld
                 Console.SetCursorPosition(userY, userX);
                 ShowPlayer(player);
 
-                MovePlayer(ref userX, ref userY, map, wall);
+                TryMovePlayer(ref userX, ref userY, map, wall);
 
                 if (map[userX, userY] == treasure)
                 {
@@ -97,7 +98,7 @@ namespace BraveNewWorld
             Console.Write(player);
         }
 
-        static void GetDirection(out int directionX, out int directionY, ref int userX, ref int userY)
+        static void GetDirection(out int directionX, out int directionY)
         {
             const ConsoleKey CommandMoveUp = ConsoleKey.UpArrow;
             const ConsoleKey CommandMoveDown = ConsoleKey.DownArrow;
@@ -106,8 +107,8 @@ namespace BraveNewWorld
 
             ConsoleKeyInfo charKey = Console.ReadKey();
 
-            directionX = userX;
-            directionY = userY;
+            directionX = 0;
+            directionY = 0;
 
             switch (charKey.Key)
             {
@@ -129,18 +130,20 @@ namespace BraveNewWorld
             }
         }
 
-        static void MovePlayer(ref int userX, ref int userY, char[,] map, char wall)
+        static void TryMovePlayer(ref int userX, ref int userY, char[,] map, char wall)
         {
-            GetDirection(out int directionX, out int directionY, ref  userX, ref userY);
+            GetDirection(out int directionX, out int directionY);
 
-            if (map[userX + directionX, userY] != wall )
+            if (map[userX + directionX, userY + directionY] != wall )
             {
-                userX = directionX;              
+                MovePlayer(ref userX, directionX, ref userY, directionY);
             }
-            else if (map[userX, userY + directionY] != wall)
-            {
-                userY = directionY;
-            }
+        }
+
+        static void MovePlayer(ref int userX, int directionX, ref int userY, int directionY)
+        {
+            userX += directionX;
+            userY += directionY;
         }
     }
 }
