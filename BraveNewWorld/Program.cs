@@ -116,7 +116,7 @@ namespace BraveNewWorld
                     break;
 
                 case CommandMoveDown:
-                    directionX++;
+                    directionX++; 
                     break;
 
                 case CommandMoveLeft:
