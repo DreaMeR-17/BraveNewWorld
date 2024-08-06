@@ -8,6 +8,11 @@ namespace BraveNewWorld
         {
             Console.CursorVisible = false;
 
+            const ConsoleKey CommandMoveUp = ConsoleKey.UpArrow;
+            const ConsoleKey CommandMoveDown = ConsoleKey.DownArrow;
+            const ConsoleKey CommandMoveLeft = ConsoleKey.LeftArrow;
+            const ConsoleKey CommandMoveRight = ConsoleKey.RightArrow;
+
             char[,] map =
             {
                 {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#', },
@@ -28,10 +33,17 @@ namespace BraveNewWorld
 
             char[] bag = new char[1];
 
+            char treasure = '$';
+            char empty = '0';
+            char wall = '#';
+            char player = '@';
+
             int userX = 2;
             int userY = 2;
 
-            while (true)
+            bool isWork = true;
+
+            while (isWork)
             {
                 Console.SetCursorPosition(0, 14);
                 ShowBag(bag);
@@ -40,44 +52,44 @@ namespace BraveNewWorld
                 ShowMap(map);
 
                 Console.SetCursorPosition(userY, userX);
-                Console.Write('@');
+                ShowPlayer(player);
 
                 ConsoleKeyInfo charKey = Console.ReadKey();
 
                 switch (charKey.Key)
                 {
-                    case ConsoleKey.UpArrow:
-                        if (map[userX - 1, userY] != '#')
+                    case CommandMoveUp:
+                        if (map[userX - 1, userY] != wall)
                         {
                             userX--;
                         }
                         break;
 
-                    case ConsoleKey.DownArrow:
-                        if (map[userX + 1, userY] != '#')
+                    case CommandMoveDown:
+                        if (map[userX + 1, userY] != wall)
                         {
                             userX++;
                         }
                         break;
 
-                    case ConsoleKey.LeftArrow:
-                        if (map[userX, userY - 1] != '#')
+                    case CommandMoveLeft:
+                        if (map[userX, userY - 1] != wall)
                         {
                             userY--;
                         }
                         break;
 
-                    case ConsoleKey.RightArrow:
-                        if (map[userX, userY + 1] != '#')
+                    case CommandMoveRight:
+                        if (map[userX, userY + 1] != wall)
                         {
                             userY++;
                         }
                         break;
                 }
 
-                if (map[userX, userY] == '$')
+                if (map[userX, userY] == treasure)
                 {
-                    map[userX, userY] = '0';
+                    map[userX, userY] = empty;
 
                     char[] tempBag = new char[bag.Length + 1];
 
@@ -86,7 +98,7 @@ namespace BraveNewWorld
                         tempBag[i] = bag[i];
                     }
 
-                    tempBag[tempBag.Length - 1] = '$';
+                    tempBag[tempBag.Length - 1] = treasure;
 
                     bag = tempBag;
                 }
@@ -114,6 +126,11 @@ namespace BraveNewWorld
             {
                 Console.Write($"{bag[i]} ");
             }
+        }
+
+        static void ShowPlayer(char player)
+        {
+            Console.Write(player);
         }
     }
 }
