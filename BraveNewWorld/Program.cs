@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace BraveNewWorld
 {
@@ -7,11 +8,6 @@ namespace BraveNewWorld
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
-
-            const ConsoleKey CommandMoveUp = ConsoleKey.UpArrow;
-            const ConsoleKey CommandMoveDown = ConsoleKey.DownArrow;
-            const ConsoleKey CommandMoveLeft = ConsoleKey.LeftArrow;
-            const ConsoleKey CommandMoveRight = ConsoleKey.RightArrow;
 
             char[,] map =
             {
@@ -54,38 +50,7 @@ namespace BraveNewWorld
                 Console.SetCursorPosition(userY, userX);
                 ShowPlayer(player);
 
-                ConsoleKeyInfo charKey = Console.ReadKey();
-
-                switch (charKey.Key)
-                {
-                    case CommandMoveUp:
-                        if (map[userX - 1, userY] != wall)
-                        {
-                            userX--;
-                        }
-                        break;
-
-                    case CommandMoveDown:
-                        if (map[userX + 1, userY] != wall)
-                        {
-                            userX++;
-                        }
-                        break;
-
-                    case CommandMoveLeft:
-                        if (map[userX, userY - 1] != wall)
-                        {
-                            userY--;
-                        }
-                        break;
-
-                    case CommandMoveRight:
-                        if (map[userX, userY + 1] != wall)
-                        {
-                            userY++;
-                        }
-                        break;
-                }
+                GetDirection(map, ref userX, ref userY, wall);
 
                 if (map[userX, userY] == treasure)
                 {
@@ -131,6 +96,47 @@ namespace BraveNewWorld
         static void ShowPlayer(char player)
         {
             Console.Write(player);
+        }
+
+        static void GetDirection(char[,] map, ref int userX, ref int userY, char wall)
+        {
+            const ConsoleKey CommandMoveUp = ConsoleKey.UpArrow;
+            const ConsoleKey CommandMoveDown = ConsoleKey.DownArrow;
+            const ConsoleKey CommandMoveLeft = ConsoleKey.LeftArrow;
+            const ConsoleKey CommandMoveRight = ConsoleKey.RightArrow;
+
+            ConsoleKeyInfo charKey = Console.ReadKey();
+
+            switch (charKey.Key)
+            {
+                case CommandMoveUp:
+                    if (map[userX - 1, userY] != wall)
+                    {
+                        userX--;
+                    }
+                    break;
+
+                case CommandMoveDown:
+                    if (map[userX + 1, userY] != wall)
+                    {
+                        userX++;
+                    }
+                    break;
+
+                case CommandMoveLeft:
+                    if (map[userX, userY - 1] != wall)
+                    {
+                        userY--;
+                    }
+                    break;
+
+                case CommandMoveRight:
+                    if (map[userX, userY + 1] != wall)
+                    {
+                        userY++;
+                    }
+                    break;
+            }
         }
     }
 }
