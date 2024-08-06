@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace BraveNewWorld
 {
@@ -50,7 +49,7 @@ namespace BraveNewWorld
                 Console.SetCursorPosition(userY, userX);
                 ShowPlayer(player);
 
-                GetDirection(map, ref userX, ref userY, wall);
+                MovePlayer(ref userX, ref userY, map, wall);
 
                 if (map[userX, userY] == treasure)
                 {
@@ -98,7 +97,7 @@ namespace BraveNewWorld
             Console.Write(player);
         }
 
-        static void GetDirection(char[,] map, ref int userX, ref int userY, char wall)
+        static void GetDirection(out int directionX, out int directionY, ref int userX, ref int userY)
         {
             const ConsoleKey CommandMoveUp = ConsoleKey.UpArrow;
             const ConsoleKey CommandMoveDown = ConsoleKey.DownArrow;
@@ -107,35 +106,40 @@ namespace BraveNewWorld
 
             ConsoleKeyInfo charKey = Console.ReadKey();
 
+            directionX = userX;
+            directionY = userY;
+
             switch (charKey.Key)
             {
                 case CommandMoveUp:
-                    if (map[userX - 1, userY] != wall)
-                    {
-                        userX--;
-                    }
+                    directionX--;
                     break;
 
                 case CommandMoveDown:
-                    if (map[userX + 1, userY] != wall)
-                    {
-                        userX++;
-                    }
+                    directionX++;
                     break;
 
                 case CommandMoveLeft:
-                    if (map[userX, userY - 1] != wall)
-                    {
-                        userY--;
-                    }
+                    directionY--;
                     break;
 
                 case CommandMoveRight:
-                    if (map[userX, userY + 1] != wall)
-                    {
-                        userY++;
-                    }
+                    directionY++;
                     break;
+            }
+        }
+
+        static void MovePlayer(ref int userX, ref int userY, char[,] map, char wall)
+        {
+            GetDirection(out int directionX, out int directionY, ref  userX, ref userY);
+
+            if (map[userX + directionX, userY] != wall )
+            {
+                userX = directionX;              
+            }
+            else if (map[userX, userY + directionY] != wall)
+            {
+                userY = directionY;
             }
         }
     }
