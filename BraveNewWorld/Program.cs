@@ -34,8 +34,8 @@ namespace BraveNewWorld
             char wall = '#';
             char player = '@';
 
-            int userX = 2;
-            int userY = 2;
+            int userPositionX = 2;
+            int userPositionY = 2;
 
             bool isWork = true;
 
@@ -47,12 +47,12 @@ namespace BraveNewWorld
                 Console.SetCursorPosition(0, 0);
                 ShowMap(map);
 
-                Console.SetCursorPosition(userY, userX);
+                Console.SetCursorPosition(userPositionY, userPositionX);
                 ShowPlayer(player);
 
-                TryMovePlayer(ref userX, ref userY, map, wall);
+                TryMovePlayer(ref userPositionX, ref userPositionY, map, wall);
 
-                TryTakeTreasure(map, ref userX, ref userY, ref bag, treasure, empty);
+                TryTakeTreasure(map, ref userPositionX, ref userPositionY, ref bag, treasure, empty);
 
                 Console.Clear();
             }
@@ -117,27 +117,27 @@ namespace BraveNewWorld
             }
         }
 
-        static void TryMovePlayer(ref int userX, ref int userY, char[,] map, char wall)
+        static void TryMovePlayer(ref int userPositionX, ref int userPositionY, char[,] map, char wall)
         {
             GetDirection(out int directionX, out int directionY);
 
-            if (map[userX + directionX, userY + directionY] != wall)
+            if (map[userPositionX + directionX, userPositionY + directionY] != wall)
             {
-                MovePlayer(ref userX, directionX, ref userY, directionY);
+                MovePlayer(ref userPositionX, directionX, ref userPositionY, directionY);
             }
         }
 
-        static void MovePlayer(ref int userX, int directionX, ref int userY, int directionY)
+        static void MovePlayer(ref int userPositionX, int directionX, ref int userPositionY, int directionY)
         {
-            userX += directionX;
-            userY += directionY;
+            userPositionX += directionX;
+            userPositionY += directionY;
         }
 
-        static void TryTakeTreasure(char[,] map, ref int userX, ref int userY, ref char[] bag, char treasure, char empty)
+        static void TryTakeTreasure(char[,] map, ref int userPositionX, ref int userPositionY, ref char[] bag, char treasure, char empty)
         {
-            if (map[userX, userY] == treasure)
+            if (map[userPositionX, userPositionY] == treasure)
             {
-                map[userX, userY] = empty;
+                map[userPositionX, userPositionY] = empty;
 
                 GetNewTreasure(ref bag, treasure);
             }
