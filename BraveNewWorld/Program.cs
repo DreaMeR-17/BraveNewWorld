@@ -27,7 +27,7 @@ namespace BraveNewWorld
 
             };
 
-            char[] bag = new char[1];
+            char[] bag = new char[0];
 
             char treasure = '$';
             char empty = '0';
@@ -52,21 +52,8 @@ namespace BraveNewWorld
 
                 TryMovePlayer(ref userX, ref userY, map, wall);
 
-                if (map[userX, userY] == treasure)
-                {
-                    map[userX, userY] = empty;
+                TryTakeTreasure(map, ref userX, ref userY, ref bag, treasure, empty);
 
-                    char[] tempBag = new char[bag.Length + 1];
-
-                    for (int i = 0; i < bag.Length; i++)
-                    {
-                        tempBag[i] = bag[i];
-                    }
-
-                    tempBag[tempBag.Length - 1] = treasure;
-
-                    bag = tempBag;
-                }
                 Console.Clear();
             }
         }
@@ -117,7 +104,7 @@ namespace BraveNewWorld
                     break;
 
                 case CommandMoveDown:
-                    directionX++; 
+                    directionX++;
                     break;
 
                 case CommandMoveLeft:
@@ -134,7 +121,7 @@ namespace BraveNewWorld
         {
             GetDirection(out int directionX, out int directionY);
 
-            if (map[userX + directionX, userY + directionY] != wall )
+            if (map[userX + directionX, userY + directionY] != wall)
             {
                 MovePlayer(ref userX, directionX, ref userY, directionY);
             }
@@ -144,6 +131,30 @@ namespace BraveNewWorld
         {
             userX += directionX;
             userY += directionY;
+        }
+
+        static void TryTakeTreasure(char[,] map, ref int userX, ref int userY, ref char[] bag, char treasure, char empty)
+        {
+            if (map[userX, userY] == treasure)
+            {
+                map[userX, userY] = empty;
+
+                GetNewTreasure(ref bag, treasure);
+            }
+        }
+
+        static void GetNewTreasure(ref char[] bag, char treasure)
+        {
+            char[] tempBag = new char[bag.Length + 1];
+
+            for (int i = 0; i < bag.Length; i++)
+            {
+                tempBag[i] = bag[i];
+            }
+
+            tempBag[tempBag.Length - 1] = treasure;
+
+            bag = tempBag;
         }
     }
 }
